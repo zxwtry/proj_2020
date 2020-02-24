@@ -1,0 +1,45 @@
+{
+    "go.useLanguageServer": true,
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.snippetSuggestions": "none",
+        //"editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true,
+        }
+    },
+    "gopls": {
+        "usePlaceholders": true, // add parameter placeholders when completing a function
+
+        // Experimental settings
+        "completeUnimported": true, // autocomplete unimported packages
+        "watchFileChanges": true,  // watch file changes outside of the editor
+        "deepCompletion": true,     // enable deep completion
+    },
+    "files.eol": "\n", // formatting only supports LF line endings
+    "go.languageServerExperimentalFeatures": {
+        "format": false,
+    },
+    "workbench.iconTheme": "vs-minimal",
+    "window.zoomLevel": 0,
+    "editor.fontSize": 18,
+    "go.autocompleteUnimportedPackages": true,
+    "editor.formatOnType": false,
+    "editor.formatOnSave": false,
+    "files.autoSave": "onFocusChange",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "go.lintTool": "gometalinter",
+    "go.lintFlags": [
+        //"--disable-all",
+        "--enable=golint",
+        //"--exclude=exported (const|type|method|function) [\\w.]+ should have comment (\\(or a comment on this block\\) )?or be unexported",
+        "--exclude=don't use ALL_CAPS in Go names; use CamelCase",
+        "--exclude=(func|const|struct field|) \\w+ should be \\w+"
+    ],
+    "go.formatTool": "goreturns",
+}
