@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/constant"
+	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/comm_constant"
 	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/http"
 	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/tool"
 )
@@ -21,16 +21,16 @@ func ServiceUrlShenDuGuoJi() (int32, string) {
 		return videoSetErrCode, videoSetErrMsg
 	}
 
-	shenDuGuoJiVideoSet := constant.ShenDuGuoJiVideoSet{}
+	shenDuGuoJiVideoSet := comm_constant.ShenDuGuoJiVideoSet{}
 	shenDuGuoJiVideoSetErr := json.Unmarshal([]byte(videoSetData), &shenDuGuoJiVideoSet)
 	if shenDuGuoJiVideoSetErr != nil {
 		tool.Log("shenduguoji", fmt.Sprintf("http simple notoken get [videoSetUrl:%s] [videoSetErrCode:%d] [videoSetErrMsg:%s] [videoSetData:%s]", videoSetUrl, videoSetErrCode, videoSetErrMsg, videoSetData))
-		return constant.FUNCTION_JSON_UNMARSHAL_ERROR, shenDuGuoJiVideoSetErr.Error()
+		return comm_constant.FUNCTION_JSON_UNMARSHAL_ERROR, shenDuGuoJiVideoSetErr.Error()
 	}
 
 	for _, shenDuGuoJiVideo := range shenDuGuoJiVideoSet.Data.List {
 		time.Sleep(5 * time.Second)
-		mp3FilePath := fmt.Sprintf(constant.FILE_PATH_SHEN_DU_GUO_JI, strings.Replace(shenDuGuoJiVideo.Title, " ", "-", -1))
+		mp3FilePath := fmt.Sprintf(comm_constant.FILE_PATH_SHEN_DU_GUO_JI, strings.Replace(shenDuGuoJiVideo.Title, " ", "-", -1))
 		mp3FilePath = strings.ReplaceAll(mp3FilePath, "《", "")
 		mp3FilePath = strings.ReplaceAll(mp3FilePath, "》", "")
 		_, fileExistErr := os.Stat(mp3FilePath)
@@ -47,7 +47,7 @@ func ServiceUrlShenDuGuoJi() (int32, string) {
 			tool.Log("shenduguoji", fmt.Sprintf("no token get [videoInfoUrl:%s] [videoInfoErrCode:%d] [videoInfoErrMsg:%s]", videoInfoUrl, videoInfoErrCode, videoInfoErrMsg))
 			continue
 		}
-		xinWenLianBoVideoInfo := constant.XinWenLianBoVideoInfo{}
+		xinWenLianBoVideoInfo := comm_constant.XinWenLianBoVideoInfo{}
 		videoInfoUnmarshalErr := json.Unmarshal([]byte(videoInfoData), &xinWenLianBoVideoInfo)
 		if videoInfoUnmarshalErr != nil {
 			tool.Log("shenduguoji", fmt.Sprintf("videoInfo Unmarshal error [videoInfoData:%s] [videoInfoUnmarshalErr:%d]", videoInfoData, videoInfoUnmarshalErr))

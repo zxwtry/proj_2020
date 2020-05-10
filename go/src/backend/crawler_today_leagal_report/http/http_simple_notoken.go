@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/constant"
+	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/comm_constant"
 )
 
 var globalClient http.Client = http.Client{
@@ -22,7 +22,7 @@ func HttpSimpleNoTokenGet(dataUrl string) (int32, string, string) {
 
 	request, err := http.NewRequest("GET", dataUrl, nil)
 	if err != nil {
-		return constant.HTTP_SIMPLE_NOTOKEN_NEW_REQUEST_ERROR, fmt.Sprintf("create request [dataUrl:%s] [err:%+v]", dataUrl, err), ""
+		return comm_constant.HTTP_SIMPLE_NOTOKEN_NEW_REQUEST_ERROR, fmt.Sprintf("create request [dataUrl:%s] [err:%+v]", dataUrl, err), ""
 	}
 
 	// 添加请求头
@@ -40,13 +40,13 @@ func HttpSimpleNoTokenGet(dataUrl string) (int32, string, string) {
 
 	resp, err := globalClient.Do(request)
 	if err != nil {
-		return constant.HTTP_SIMPLE_NOTOKEN_DO_REQUEST_ERROR, fmt.Sprintf("http client do request err [request:%+v] [err:%+v]", request, err), ""
+		return comm_constant.HTTP_SIMPLE_NOTOKEN_DO_REQUEST_ERROR, fmt.Sprintf("http client do request err [request:%+v] [err:%+v]", request, err), ""
 	}
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return constant.HTTP_SIMPLE_NOTOKEN_READ_RESPONSE_ERROR, fmt.Sprintf("io read all [resp:%+v] [err:%+v]", resp, err), ""
+		return comm_constant.HTTP_SIMPLE_NOTOKEN_READ_RESPONSE_ERROR, fmt.Sprintf("io read all [resp:%+v] [err:%+v]", resp, err), ""
 	}
 	return 0, "", string(data)
 }

@@ -7,13 +7,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/constant"
+	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/comm_constant"
 	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/http"
 	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/tool"
 )
 
 func ServiceUrlXinWenLianBoMp3(d time.Time) (int32, string) {
-	strYmd := d.Format(constant.TIME_FORMAT_YMD)
+	strYmd := d.Format(comm_constant.TIME_FORMAT_YMD)
 	dataUrl := fmt.Sprintf("http://tv.cctv.com/lm/xwlb/day/%s.shtml", strYmd)
 	getErrCode, getErrMsg, getData := http.HttpSimpleNoTokenGet(dataUrl)
 	if getErrCode != 0 {
@@ -55,11 +55,11 @@ func ServiceUrlXinWenLianBoMp3(d time.Time) (int32, string) {
 		tool.Log("xinwenlianbo", fmt.Sprintf("no token get [videoInfoUrl:%s] [videoInfoErrCode:%d] [videoInfoErrMsg:%s]", videoInfoUrl, videoInfoErrCode, videoInfoErrMsg))
 		return videoInfoErrCode, videoInfoErrMsg
 	}
-	xinWenLianBoVideoInfo := constant.XinWenLianBoVideoInfo{}
+	xinWenLianBoVideoInfo := comm_constant.XinWenLianBoVideoInfo{}
 	videoInfoUnmarshalErr := json.Unmarshal([]byte(videoInfoData), &xinWenLianBoVideoInfo)
 	if videoInfoUnmarshalErr != nil {
 		tool.Log("xinwenlianbo", fmt.Sprintf("videoInfo Unmarshal error [videoInfoData:%s] [videoInfoUnmarshalErr:%d]", videoInfoData, videoInfoUnmarshalErr))
-		return constant.FUNCTION_JSON_UNMARSHAL_ERROR, videoInfoUnmarshalErr.Error()
+		return comm_constant.FUNCTION_JSON_UNMARSHAL_ERROR, videoInfoUnmarshalErr.Error()
 	}
 
 	mp3Url := strings.Replace(xinWenLianBoVideoInfo.Manifest.AudioMp3, "main.m3u8", "16.mp3", 1)
@@ -70,7 +70,7 @@ func ServiceUrlXinWenLianBoMp3(d time.Time) (int32, string) {
 		return mp3ErrCode, mp3ErrMsg
 	}
 
-	mp3FilePath := fmt.Sprintf(constant.FILE_PATH_XIN_WEN_LIAN_BO, strYmd)
+	mp3FilePath := fmt.Sprintf(comm_constant.FILE_PATH_XIN_WEN_LIAN_BO, strYmd)
 	mp3WriteErrCode, mp3WriteErrMsg := tool.ToolFileWrite(mp3FilePath, []byte(mp3Data), os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
 	if mp3WriteErrCode != 0 {
 		tool.Log("xinwenlianbo", fmt.Sprintf("mp3 write file [mp3FilePath:%s] [mp3WriteErrCode:%d] [mp3WriteErrMsg:%s]", mp3FilePath, mp3WriteErrCode, mp3WriteErrMsg))

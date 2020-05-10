@@ -1,4 +1,4 @@
-package constant
+package comm_constant
 
 const (
 	// 函数类

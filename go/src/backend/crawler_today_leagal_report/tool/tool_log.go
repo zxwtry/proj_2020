@@ -7,7 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/constant"
+	"github.com/zxwtry/proj_2020/go/src/backend/backend_comm_constant"
+	"github.com/zxwtry/proj_2020/go/src/backend/backend_comm_func"
+	"github.com/zxwtry/proj_2020/go/src/backend/crawler_today_leagal_report/comm_constant"
 )
 
 // 自己实现，不怎么高效的写日至api
@@ -33,7 +35,7 @@ func Log(logName, logStr string) {
 	}
 
 	fileFunc, fileName, fileLine, ok := runtime.Caller(1)
-	strYmdHis := time.Now().Format(constant.TIME_FORMAT_YMDHIS)
+	strYmdHis := time.Now().Format(comm_constant.TIME_FORMAT_YMDHIS)
 	if ok {
 		logStr = fmt.Sprintf(LOG_FORMAT_FILE_INFO, strYmdHis, fileName, fileLine, fileFunc, logStr)
 	} else {
@@ -52,9 +54,16 @@ func getLogNameLock(logName string) (*LogNameLock, error) {
 	if logNameLock, ok := logMap[logName]; ok {
 		return &logNameLock, nil
 	}
-	//
-	strYmdHis := time.Now().Format(constant.TIME_FORMAT_YMDH_ONLY)
-	fileName := fmt.Sprintf("D:/code/github/proj_2020/go/src/backend/crawler_today_leagal_report/log/%s_%s.log", strYmdHis, logName)
+	strYmdHis := time.Now().Format(comm_constant.TIME_FORMAT_YMDH_ONLY)
+
+	var fileNameForm string
+	if backend_comm_func.CheckZxwPcEnv() {
+		fileNameForm = backend_comm_constant.LOG_FILE_ZXW_PC
+	} else {
+		fileNameForm = backend_comm_constant.LOG_FILE_NOT_ZXW_PC
+	}
+
+	fileName := fmt.Sprintf(fileNameForm, strYmdHis, logName)
 	fileHandler, fileHandlerErr := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if fileHandlerErr != nil {
 		return nil, fileHandlerErr

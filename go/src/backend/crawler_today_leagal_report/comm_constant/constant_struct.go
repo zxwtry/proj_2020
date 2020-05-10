@@ -1,4 +1,4 @@
-package constant
+package comm_constant
 
 type XinWenLianBoVideoInfoManifest struct {
 	HlsAudioUrl string `json:"hls_audio_url"`

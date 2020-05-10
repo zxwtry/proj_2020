@@ -1,4 +1,4 @@
-package constant
+package comm_constant
 
 // 时间相关
 const (
