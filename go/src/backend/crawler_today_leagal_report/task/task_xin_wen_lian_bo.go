@@ -10,8 +10,8 @@ import (
 )
 
 func TaskXinWenLianBoMp3() {
-	startTimeStr := "20200101"
-	endTimeStr := "20200229"
+	startTimeStr := "20200301"
+	endTimeStr := "20200405"
 	startTime, startTimeErr := time.Parse(constant.TIME_FORMAT_YMD, startTimeStr)
 	endTime, endTimeErr := time.Parse(constant.TIME_FORMAT_YMD, endTimeStr)
 	if startTimeErr != nil || endTimeErr != nil {

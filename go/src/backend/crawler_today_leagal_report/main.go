@@ -10,6 +10,6 @@ func main() {
 	// fmt.Printf("mp3Path:%s\n", mp3Path)
 	// fmt.Printf("lrcPath:%s\n", lrcPath)
 
-	// task.TaskXinWenLianBoMp3()
-	task.TaskShenDuGuoJi()
+	task.TaskXinWenLianBoMp3()
+	// task.TaskShenDuGuoJi()
 }
